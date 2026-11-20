@@ -1,4 +1,5 @@
-$dir = Join-Path $PSScriptRoot "reminders"
+$bot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\..\.."))
+$dir = Join-Path $bot "reminders"
 if (-not (Test-Path $dir)) { exit 0 }
 
 Add-Type -AssemblyName System.Windows.Forms

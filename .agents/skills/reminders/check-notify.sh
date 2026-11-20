@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-dir="$(cd "$(dirname "$0")" && pwd)"
-rem="$dir/reminders"
+bot="$(cd "$(dirname "$0")/../../.." && pwd)"
+rem="$bot/reminders"
 [ -d "$rem" ] || exit 0
 now=$(date +%s)
 

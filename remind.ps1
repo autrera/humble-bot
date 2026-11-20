@@ -25,7 +25,7 @@ $exists = $false
 $null = schtasks /Query /TN $task 2>$null
 if ($LASTEXITCODE -eq 0) { $exists = $true }
 if (-not $exists) {
-    $checker = 'powershell -NoProfile -ExecutionPolicy Bypass -File "' + $PSScriptRoot + '\check-notify.ps1"'
+    $checker = 'powershell -NoProfile -ExecutionPolicy Bypass -File "' + (Join-Path $PSScriptRoot '.agents\skills\reminders\check-notify.ps1') + '"'
     schtasks /Create /TN $task /TR $checker /SC MINUTE /MO 1 | Out-Null
     Write-Host "Scheduled the BotNotify checker (runs every minute)."
 }
