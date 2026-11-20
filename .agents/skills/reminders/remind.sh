@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-dir="$(cd "$(dirname "$0")" && pwd)"
-rem="$dir/reminders"
+skilldir="$(cd "$(dirname "$0")" && pwd)"
+bot="$(cd "$skilldir/../../.." && pwd)"
+rem="$bot/reminders"
 mkdir -p "$rem"
 
 if [ $# -lt 2 ]; then
@@ -23,6 +24,6 @@ printf '%s' "$2" > "$file"
 echo "Reminder set: $2 for $(date -d @"$fire" '+%Y-%m-%d %H:%M') -> $file"
 
 if ! crontab -l 2>/dev/null | grep -q 'check-notify.sh'; then
-    ( crontab -l 2>/dev/null; echo "* * * * * bash $dir/.agents/skills/reminders/check-notify.sh" ) | crontab -
+    ( crontab -l 2>/dev/null; echo "* * * * * bash $skilldir/check-notify.sh" ) | crontab -
     echo "Added the once-a-minute cron entry for check-notify.sh."
 fi

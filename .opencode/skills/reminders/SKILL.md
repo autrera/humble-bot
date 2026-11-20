@@ -7,8 +7,10 @@ The Bot folder keeps one file per pending reminder in `reminders/`. The file nam
 
 To set one:
 
-- Windows: `powershell -File remind.ps1 "2026-11-21 09:00" "drink water"`
-- Linux: `bash remind.sh "2026-11-21 09:00" "drink water"`
+From the Bot folder:
+
+- Windows: `powershell -File .agents\skills\reminders\remind.ps1 "2026-11-21 09:00" "drink water"`
+- Linux: `bash .agents/skills/reminders/remind.sh "2026-11-21 09:00" "drink water"`
 
 The script accepts `YYYY-MM-DD HH:MM` or today's `HH:MM` and refuses times that already passed. The first run schedules the minute checker (`schtasks` on Windows, `crontab` on Linux).
 
