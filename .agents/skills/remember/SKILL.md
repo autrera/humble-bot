@@ -3,11 +3,10 @@ name: Remember
 description: How to handle "remember this" requests. Use when the user asks the bot to remember something, mentions facts or preferences to keep, or asks what was said before.
 ---
 
-When the user asks to remember something, add it to `AGENTS.md` in the Bot folder:
+When the user asks to remember something, write it to `data/learnings.md` in the Bot folder.
 
-- Facts, preferences, habits, and things said about a project -> the `Memory` section (prefix the entry with the date if it matters when it was learned).
-- Who the user is and how they like answers -> the `About me` section.
-- Rules for how to answer or behave -> the `Rules` section.
-- Project or topic specifics -> the `Project notes` section or a new section for that topic.
+If the `data/` folder or `learnings.md` file does not exist, create both first.
 
-Keep entries short, one line each, no fluff. The file is read at the start of every new session, so entries there apply to every future chat; you can edit it anytime.
+Append a short line to the file. Prefix the entry with the date when it matters. Group by topic if the file grows. Keep it to facts, preferences, and things the user explicitly asked to remember.
+
+`data/learnings.md` is loaded at the start of every session, so entries there apply to every future chat. Do not write these requests to `AGENTS.md` sections.
