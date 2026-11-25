@@ -10,9 +10,9 @@ A deliberately minimal personal assistant. It is a folder of files, not a servic
   - `MEMORY.md` - working memory exported by `mind.py`. Auto-generated; do not edit by hand.
   - Add or split other files here as you wish.
 - `mind.py` - offline memory tool (MIT, Da7-Tech/mind), modified to export only to `data/MEMORY.md`. Its graph lives in `.mind/`, which is gitignored.
-- `.agents/skills/reminders/` - the reminders skill: `SKILL.md` plus `remind.ps1`, `remind.sh`, `check-notify.ps1`, `check-notify.sh`.
-- `.claude/skills` and `.opencode/skills` - links to `.agents/skills` so both harnesses discover the same skill. One source of truth.
-- `.gitignore` - ignores `data/*` (except `.gitkeep`) and `.mind`.
+- `.agents/skills/` - your personal skills folder. Empty by default (only `.gitkeep` is tracked); add custom skills here for your assistant.
+- `.claude/skills` and `.opencode/skills` - links to `.agents/skills` so both harnesses discover the same skills. One source of truth.
+- `.gitignore` - ignores `data/*` (except `.gitkeep`), `.mind`, and your personal skills in `.agents/skills/*` (except `.gitkeep`).
 
 ## Setup
 
@@ -25,7 +25,7 @@ A deliberately minimal personal assistant. It is a folder of files, not a servic
    ```
 
    On Windows, `py -3 mind.py init` also works. This creates `.mind/` and writes `data/MEMORY.md`. It does not create `AGENTS.md`, `CLAUDE.md` or `GEMINI.md`.
-4. Start a new chat in this folder. `AGENTS.md` loads your data files and the reminders skill is discovered automatically.
+4. Start a new chat in this folder. `AGENTS.md` loads your data files and any skills in `.agents/skills/` are discovered automatically.
 
 That is it.
 
@@ -36,17 +36,28 @@ That is it.
   - `python mind.py remember "the fact"`
   - `python mind.py recall "the question"`
   - `python mind.py dream` and `python mind.py status`
-- **Reminders**: just ask the agent to remind you of something; the reminders skill handles it. The manual equivalents are:
-  - Windows: `powershell -File .agents\skills\reminders\remind.ps1 "2026-11-21 09:00" "drink water"`
-  - Linux: `bash .agents/skills/reminders/remind.sh "2026-11-21 09:00" "drink water"`
+- **Skills**: customize your bot by creating the skills you need inside `.agents/skills/` (each skill lives in its own subfolder with a `SKILL.md`). You can just ask your LLM to build a skill for you whenever a workflow comes up - everything inside `.agents/skills/` (except `.gitkeep`) is ignored by git so your personal skills and scripts stay private.
 
-  Times are `YYYY-MM-DD HH:MM` or today's `HH:MM`. The first call registers a once-a-minute checker (`schtasks` on Windows, `crontab` on Linux); pending reminders are files in `reminders/`.
+  Some ideas to get started:
+  - **Daily briefing**: summarize today's notes, open tasks, or calendar items at the start of a chat.
+  - **Habit or journal check-in**: prompt you with reflection questions and append entries to `data/`.
+  - **Bookmark / reading inbox**: save links, summarize articles, and tag topics into your memory graph.
+  - **Finances or expense log**: parse receipts or quick expense notes into a local CSV or markdown ledger.
+  - **Workout or meal tracker**: log sessions and look up trends from files in `data/`.
+  - **Project / repo helper**: automate status checks, release checklists, or weekly wrap-ups for your projects.
 
 ## Windows and Linux
 
-The scripts come in PowerShell and bash versions. On Windows, `.claude/skills` and `.opencode/skills` are directory junctions to `.agents/skills`. Git stores their contents as ordinary files, so after cloning on another machine they may be plain duplicated folders - replace them with symlinks to `.agents/skills` if you want a single source of truth:
+On Windows, `.claude/skills` and `.opencode/skills` are directory junctions to `.agents/skills`. After cloning on another machine, link them to `.agents/skills` if you use Claude Code or OpenCode and want a single source of truth:
 
+```bash
+# Linux / macOS
+ln -s ../.agents/skills .claude/skills
+ln -s ../.agents/skills .opencode/skills
 ```
-ln -s .agents/skills .claude/skills
-ln -s .agents/skills .opencode/skills
+
+```cmd
+:: Windows
+mklink /J .claude\skills .agents\skills
+mklink /J .opencode\skills .agents\skills
 ```

@@ -1,3 +1,7 @@
 data/*
 !data/.gitkeep
 .mind
+.agents/skills/*
+!.agents/skills/.gitkeep
+.claude/skills/*
+.opencode/skills/*
