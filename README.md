@@ -10,6 +10,7 @@ A deliberately minimal personal assistant. It is a folder of files, not a servic
   - `MEMORY.md` - working memory exported by `mind.py`. Auto-generated; do not edit by hand.
   - Add or split other files here as you wish.
 - `mind.py` - offline memory tool (MIT, Da7-Tech/mind), modified to export only to `data/MEMORY.md`. Its graph lives in `.mind/`, which is gitignored.
+- `bootstrap.py` - one-command setup script: creates a starter `data/SOUL.md` if missing, links `.claude/skills` and `.opencode/skills` to `.agents/skills`, and runs `mind.py init`.
 - `.agents/skills/` - your personal skills folder. Empty by default (only `.gitkeep` is tracked); add custom skills here for your assistant.
 - `.claude/skills` and `.opencode/skills` - links to `.agents/skills` so both harnesses discover the same skills. One source of truth.
 - `.gitignore` - ignores `data/*` (except `.gitkeep`), `.mind`, and your personal skills in `.agents/skills/*` (except `.gitkeep`).
@@ -17,14 +18,14 @@ A deliberately minimal personal assistant. It is a folder of files, not a servic
 ## Setup
 
 1. Clone the repo. Use the `Bot` folder as the working directory of your coding harness (T3 Code / OpenCode, Claude Code, etc.).
-2. Create `data/SOUL.md`, or any other filename you prefer, and describe the assistant you want. Every file you put in `data/` is loaded at session start, so the names and split are up to you.
-3. Run:
+2. Run:
 
-   ```
-   python mind.py init
+   ```bash
+   python bootstrap.py
    ```
 
-   On Windows, `py -3 mind.py init` also works. This creates `.mind/` and writes `data/MEMORY.md`. It does not create `AGENTS.md`, `CLAUDE.md` or `GEMINI.md`.
+   On Windows, `py -3 bootstrap.py` also works. This creates a starter `data/SOUL.md` (if missing), links `.claude/skills` and `.opencode/skills` to `.agents/skills`, and runs `mind.py init` to create `.mind/` and `data/MEMORY.md`. It does not create or overwrite `AGENTS.md`, `CLAUDE.md` or `GEMINI.md`.
+3. Customize `data/SOUL.md` to describe the assistant you want, or ask the bot in your first chat to interview you and fill it in. Every file you put in `data/` is loaded at session start, so the names and split are up to you.
 4. Start a new chat in this folder. `AGENTS.md` loads your data files and any skills in `.agents/skills/` are discovered automatically.
 
 That is it.
@@ -48,7 +49,7 @@ That is it.
 
 ## Windows and Linux
 
-On Windows, `.claude/skills` and `.opencode/skills` are directory junctions to `.agents/skills`. After cloning on another machine, link them to `.agents/skills` if you use Claude Code or OpenCode and want a single source of truth:
+`bootstrap.py` links `.claude/skills` and `.opencode/skills` to `.agents/skills` automatically using directory junctions on Windows and symlinks on Linux/macOS. If you prefer to set those links up manually:
 
 ```bash
 # Linux / macOS
